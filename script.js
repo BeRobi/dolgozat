@@ -58,6 +58,11 @@ function init() {
   GOMBKATTINT.addEventListener("click", egerkatt);
   let txt = osszeallit();
   GOMB.innerHTML = txt;
+  const SZEGELY = document.querySelectorAll("div");
+  console.log(SZEGELY)
+  
+  
+  
 }
 
 function egerkatt() {
@@ -68,12 +73,16 @@ function egerkatt() {
 function osszeallit() {
   let txt = "";
   for (let index = 0; index < kutyaLista.length; index++) {
-    txt += `<div>
-                <p>
-                  ${kutyaLista[0]}
-               </p>
-            </div>`;
+    txt += `<div>`;
+
+    for (const kulcs in kutyaLista[index]) {
+      txt += `<p>
+                  ${kulcs} ${(kutyaLista[index][kulcs])}
+               </p>`;
+    }
+    txt += `</div>`;
   }
   console.log();
   return txt;
 }
+
