@@ -1,6 +1,10 @@
-window.addEventListener("load", init);
+window.addEventListener("load", function () {
+  kutyaGomb();
+  egerKatt();
+  //tablazat();
+});
 
-const kutyaLista = [
+const kutyaLISTA = [
   {
     nev: "Dézi",
     fajta: "foxterrier",
@@ -30,7 +34,7 @@ const kutyaLista = [
     fajta: "agár",
     lab: 4,
     marmagassa: 45,
-    nem: "szuka",
+    nem: "kan",
     kor: 1,
   },
   {
@@ -38,7 +42,7 @@ const kutyaLista = [
     fajta: "újfullandi",
     lab: 4,
     marmagassa: 11,
-    nem: "szuka",
+    nem: "kan",
     kor: 10,
   },
   {
@@ -46,43 +50,72 @@ const kutyaLista = [
     fajta: "keverék",
     lab: 4,
     marmagassa: 30,
-    nem: "szuka",
+    nem: "kan",
     kor: 7,
   },
 ];
 
-function init() {
-  const GOMB = document.getElementsByTagName("article")[0];
-  GOMB.innerHTML += "<button> Kutya </button>";
-  const GOMBKATTINT = document.querySelectorAll("article button")[0];
-  GOMBKATTINT.addEventListener("click", egerkatt);
-  let txt = osszeallit();
-  GOMB.innerHTML = txt;
-  const SZEGELY = document.querySelectorAll("div");
-  console.log(SZEGELY)
-  
-  
-  
+function kutyaGomb() {
+  const gombHELYE = document.getElementsByTagName("article")[0];
+  const kutyaGOMB = "<button>Kutyák</button>";
+  kiir(kutyaGOMB, gombHELYE);
+  szegelyez("article");
 }
 
-function egerkatt() {
-  const KUTYAKIIR = document.querySelectorAll("article")[0];
-  KUTYAKIIR.innerHTML += `${kutyaLista[2]}`;
+function egerKatt() {
+  const gombKATTINT = document.querySelector("article button");
+  gombKATTINT.addEventListener(
+    "click",
+    () => {
+      const ideART = document.querySelector("article");
+      tablazat();
+      szegelyez("table, th, td");
+    },
+    { once: true }
+  );
 }
 
-function osszeallit() {
-  let txt = "";
-  for (let index = 0; index < kutyaLista.length; index++) {
-    txt += `<div>`;
-
-    for (const kulcs in kutyaLista[index]) {
-      txt += `<p>
-                  ${kulcs} ${(kutyaLista[index][kulcs])}
-               </p>`;
-    }
-    txt += `</div>`;
+function tablazat() {
+  const tablaHELYE = document.querySelector("article");
+  const TABLAZAT = elem_letrehozo(tablaHELYE, "table", "tablazat");
+  const fejSOR = elem_letrehozo(TABLAZAT, "tr");
+  for (const kulcs in kutyaLISTA[0]) {
+    const fejCELLA = elem_letrehozo(fejSOR, "th");
+    elem_letrehozo2(fejCELLA, kulcs);
   }
-  console.log();
-  return txt;
+
+  for (let i = 0; i < kutyaLISTA.length; i++) {
+    const sorokHELYE = document.querySelector("table");
+    const tablaSOR = elem_letrehozo(sorokHELYE, "tr", kutyaLISTA[i].nev);
+    for (const kulcs in kutyaLISTA[i]) {
+      const tablaCELLA = elem_letrehozo(tablaSOR, "td");
+      elem_letrehozo2(tablaCELLA, kutyaLISTA[i][kulcs]);
+    }
+  }
+  console.log(TABLAZAT);
 }
 
+function szegelyez(mit) {
+  let SZEGELY = document.querySelectorAll(mit);
+  for (let i = 0; i < SZEGELY.length; i++) {
+    SZEGELY[i].classList.add("kutyaSzegely");
+  }
+}
+
+function elem_letrehozo(szuloelem, elem, osztaly = "") {
+  const GYEREK = document.createElement(elem);
+  szuloelem.appendChild(GYEREK);
+  if (osztaly) GYEREK.classList.add(osztaly);
+  return GYEREK;
+}
+
+function elem_letrehozo2(szuloelem, elem, osztaly = "") {
+  const GYEREK = document.createTextNode(elem);
+  szuloelem.appendChild(GYEREK);
+  if (osztaly) GYEREK.classList.add(osztaly);
+  return GYEREK;
+}
+
+function kiir(mit, hova) {
+  hova.innerHTML += mit;
+}
